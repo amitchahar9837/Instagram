@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Grand+Hotel&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  height: 100vh;
+}
+
+.noScrollbar::-webkit-scrollbar{
+  display: none;
+}
+.logo{
+  font-family: "Grand Hotel", cursive;
+  font-weight: 400;
+  font-style: normal;
+}
