@@ -125,3 +125,57 @@ export const likeList = async (req, res, next) => {
             next(error)
       }
 }
+
+export const editComment = async (req, res, next) => {
+      const { postId, commentId } = req.params;
+      const { text } = req.body;
+      try {
+            // Find the post
+            const post = await Post.findById(postId);
+
+            if (!post) {
+                  return next(errorHandler(404, "Post not found"))
+            }
+
+            // Find the comment and update
+            const comment = post.comments.id(commentId);
+
+            if (!comment) {
+                  return next(errorHandler(404, "Comment not found"));
+            }
+
+            comment.text = text;
+            // Save the updated post
+            await post.save();
+            res.status(200).json("Comment updated successfully");
+      } catch (error) {
+            next(error)
+      }
+}
+export const deleteComment = async (req, res, next) => {
+      const { postId, commentId } = req.params;
+      try {
+            // Find the post by ID
+            const post = await Post.findById(postId);
+
+            if (!post) {
+                  return res.status(404).json({ message: 'Post not found' });
+            }
+
+            // Check if the comment exists in the comments array
+            const commentIndex = post.comments.findIndex(c => c._id.toString() === commentId);
+
+            if (commentIndex === -1) {
+                  return res.status(404).json({ message: 'Comment not found' });
+            }
+
+            // Remove the comment from the array
+            post.comments.splice(commentIndex, 1);
+
+            // Save the updated post
+            await post.save();
+            res.status(200).json("Comment deleted successfully");
+      } catch (error) {
+            next(error)
+      }
+}

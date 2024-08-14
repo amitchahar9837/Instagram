@@ -7,6 +7,8 @@ import moment from "moment";
 import { useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { LuSendHorizonal } from "react-icons/lu";
+import Comment from "./Comment";
+import LikeList from "./LikeList";
 export default function Post({
   post,
   likePost,
@@ -17,11 +19,13 @@ export default function Post({
   const { currentUser } = useSelector((state) => state.user);
   const [showModal, setShowModal] = useState(false);
   const [showCommentModal, setCommentModal] = useState(false);
-  const [loadingComment, setLoadingComment] = useState(false);
+  // const [loadingComment, setLoadingComment] = useState(false);
   const [loadingLikes, setLoadingLikes] = useState(false);
   const [likesToFetch, setLikesToFetch] = useState(null);
   const [likesList, setLikesList] = useState([]);
   const [comment, setComment] = useState("");
+  const [comments,setComments] = useState(post.comments);
+
 
   const fetchLikes = async () => {
     try {
@@ -36,6 +40,49 @@ export default function Post({
       setLoadingLikes(false);
     }
   };
+
+  const handleToEdit = async (comment, editedContent) => {
+    setComments(
+      comments.map((c) =>
+        c._id === comment._id ? { ...c, text: editedContent } : c
+      )
+    );
+  };
+
+  const handleToDelete = async (comment) =>{
+    setComments(comments.filter((c) => c._id !== comment._id))
+  }
+
+  const handleSave = async (postId, editedComment,comment) => {
+    try {
+      const res = await fetch(`/api/post/editcomment/${postId}/${comment._id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({  
+          text: editedComment,
+        }),
+      });
+      if (res.ok) {
+        handleToEdit(comment, editedComment);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
+  const handleDeleteComment = async (postId,comment) =>{
+    try {
+      const res = await fetch(`/api/post/deletecomment/${postId}/${comment._id}`, {
+        method: "DELETE",});
+      if (res.ok) {
+        handleToDelete(comment);
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  }
 
   useEffect(() => {
     likesToFetch && fetchLikes();
@@ -160,11 +207,11 @@ export default function Post({
             </h2>
           )}
           <div className="mt-2 cursor-pointer">
-            {post.comments.length > 0 && (
+            {comments.length > 0 && (
               <h3 className="font-semibold" onClick={() => setCommentModal(true)}>{`view all ${
-                post.comments.length === 1
-                  ? `${post.comments.length} comment`
-                  : `${post.comments.length} comments`
+                comments.length === 1
+                  ? `${comments.length} comment`
+                  : `${comments.length} comments`
               }`}</h3>
             )}
           </div>
@@ -241,64 +288,7 @@ export default function Post({
                       className="w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded"
                     />
                     {likesList.map((user,index) => (
-                      <>
-                        <div
-                          className="flex justify-between items-center w-full"
-                          key={user._id + index}
-                        >
-                          <div className="flex gap-2 sm:gap-4 items-center">
-                            <Link
-                              to={`${
-                                currentUser._id === user._id
-                                  ? "/profile"
-                                  : `/user/${user._id}`
-                              }`}
-                              className="w-8 h-8 rounded-full"
-                            >
-                              <img
-                                src={user.dp}
-                                alt={user.name}
-                                className="w-full h-full rounded-full"
-                              />
-                            </Link>
-                            <div className="">
-                              <Link
-                                to={`${
-                                  currentUser._id === user._id
-                                    ? "/profile"
-                                    : `/user/${user._id}`
-                                }`}
-                                className="font-medium line-clamp-1 text-sm sm:text-md inline-block w-80% text-nowrap text-ellipsis"
-                              >
-                                {user.email}
-                              </Link>
-                              <h4 className="font-normal text-sm sm:text-md line-clamp-1">
-                                {user.name}
-                              </h4>
-                            </div>
-                          </div>
-
-                          {currentUser._id !== user._id ? (
-                            currentUser.following.includes(user._id) ? (
-                              <button
-                                className="bg-slate-100 text-black text-sm font-medium py-1 px-2 rounded"
-                                onClick={() => followUser(user._id)}
-                              >
-                                Following
-                              </button>
-                            ) : (
-                              <button
-                                className="bg-blue-500 text-white text-sm font-medium py-1 px-2 rounded"
-                                onClick={() => followUser(user._id)}
-                              >
-                                Follow
-                              </button>
-                            )
-                          ) : (
-                            <></>
-                          )}
-                        </div>
-                      </>
+                      <LikeList user={user} key={user._id + index} followUser={followUser} />
                     ))}
                   </>
                 ) : (
@@ -320,7 +310,7 @@ export default function Post({
             className="text-3xl cursor-pointer text-white absolute top-2 right-2 md:top-4 md:right-2"
             onClick={() => setCommentModal(false)}
           />
-          <div className="h-full w-[80%] md:w-[60%] lg:w-[70%] bg-white flex flex-col lg:flex-row">
+          <div className="h-full w-[80%] md:w-[60%] lg:w-[70%] bg-white flex flex-col lg:flex-row overflow-y-auto">
             <div className="w-full lg:h-full h-[60%] bg-slate-100 dark:bg-[rgb(16,23,42)] lg:w-[48%] p-4 flex flex-col justify-start lg:justify-center items-center">
             <div className="flex lg:hidden justify-between items-center w-full px-2 pb-4">
                   <div className="flex items-center gap-2">
@@ -453,7 +443,7 @@ export default function Post({
               </div>
               <div className="flex flex-col  gap-3 lg:gap-6 p-2 lg:pt-4 h-[58%] overflow-y-auto noScrollbar">
                 {
-                  post.title === '' && post.comments.length <=0 ? (
+                  post.title === '' && comments.length <=0 ? (
                     <div className="w-full h-full flex flex-col items-center justify-center">
                       <h1 className="font-semibold text-xl lg:text-3xl">No comments yet.</h1>
                       <p className="text-gray-400">Start the conversation</p>
@@ -480,51 +470,8 @@ export default function Post({
                       </div>
                     </div>
                     ) }
-                    {post.comments.map((comment,index) => (
-                      <div
-                        key={comment.postedBy._id + index }
-                        className="w-full items-center flex gap-2"
-                      >
-                        <Link to={`/user/${comment.postedBy._id}`}>
-                          <img
-                            src={comment.postedBy.dp}
-                            alt={comment.postedBy.name}
-                            className="w-5 h-5 lg:w-8 lg:h-8 rounded-full"
-                          />
-                        </Link>
-                        <div className="flex items-start gap-1 justify-between w-full">
-                          <p className="text-gray-500">
-                          <Link
-                            to={`/user/${comment.postedBy._id}`}
-                            className="font-semibold text-black dark:text-white"
-                          >
-                            {comment.postedBy.name}
-                          </Link>
-                          {"  "+comment.text}
-                          </p>
-                          {
-                            (currentUser._id == comment.postedBy._id || currentUser._id == post.postedBy._id) && (
-                              <Dropdown
-                    arrowIcon={false}
-                    inline
-                    label={<BsThreeDotsVertical />}
-                  >
-                    {currentUser._id === comment.postedBy._id ? (
-                      <>
-                        <Dropdown.Item>Edit Comment</Dropdown.Item>
-                        <Dropdown.Item className="text-red-500">Delete Comment</Dropdown.Item>
-                      </>
-                    ) : (
-                      currentUser._id === post.postedBy._id && (
-                      <Dropdown.Item className="text-red-500">Delete Comment</Dropdown.Item>
-                      )
-                    )}
-                    <Dropdown.Item>Cancel</Dropdown.Item>
-                  </Dropdown>
-                            )
-                          }
-                        </div>
-                      </div>
+                    {comments.map((comment,index) => (
+                      <Comment key={comment._id + index}  comment={comment} post={post} onEdit={handleSave} onDelete={handleDeleteComment} />
                     ))}
                     </>
                   )
