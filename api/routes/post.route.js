@@ -1,12 +1,13 @@
 import express from 'express';
 import { verifyToken } from '../utils/verifyUser.js';
-import { createComment, createPost, deleteComment, deletePost, editComment, followingUserPost, getMyPosts, getposts, getUserPosts, likeList, likePost } from '../controllers/post.controller.js';
+import { createComment, createPost, deleteComment, deletePost, editComment, followingUserPost, getMyPosts, getPostDetails, getposts, getUserPosts, likeList, likePost } from '../controllers/post.controller.js';
 
 
 const router = express.Router();
 
 router.get('/getposts',getposts);
 router.get('/getuserposts/:id',verifyToken, getUserPosts)
+router.get('/getPostDetails/:postId',verifyToken, getPostDetails)
 router.get('/myposts',verifyToken,getMyPosts);
 router.get('/followingUser-post',verifyToken,followingUserPost);
 router.post('/create-post',verifyToken, createPost);

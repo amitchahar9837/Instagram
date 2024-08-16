@@ -85,7 +85,8 @@ export default function Profile() {
           <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 items-center gap-4">
             {posts &&
               posts.map((post) => (
-                <div
+                <Link
+                  to={`/post/${post._id}`}
                   key={post._id}
                   className="w-full sm:w-80 h-80 bg-slate-800 rounded-sm relative group"
                 >
@@ -104,7 +105,7 @@ export default function Profile() {
                       {post.comments.length}
                     </div>
                   </div>
-                </div>
+                </Link>
               ))}
           </div>
         </>

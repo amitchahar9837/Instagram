@@ -10,6 +10,14 @@ export const getposts = async (req, res, next) => {
             next(error);
       }
 }
+export const getPostDetails = async (req, res, next) => {
+      try {
+            const post = await Post.findById(req.params.postId).populate('postedBy', '_id name username dp').populate('comments.postedBy', '_id name username dp');
+            res.status(200).json(post);
+      } catch (error) {
+            next(error);
+      }
+}
 export const getUserPosts = async (req, res, next) => {
       try {
             const posts = await Post.find({ postedBy: req.params.id }).populate('postedBy', '_id name username dp').populate('comments.postedBy', '_id name username dp').sort('-createdAt');
@@ -71,7 +79,7 @@ export const likePost = async (req, res, next) => {
                   const post = await Post.findByIdAndUpdate(req.params.postId, { $push: { likes: req.user.id } }, { new: true }).populate('postedBy', '_id name username dp').populate('comments.postedBy', '_id username name dp');
                   return res.status(200).json(post);
             } else {
-                  const post = await Post.findByIdAndUpdate(req.params.postId, { $pull: { likes: req.user.id } }, { new: true }).populate('postedBy', '_id name username dp').populate('comments.postedBy', '_id username name');
+                  const post = await Post.findByIdAndUpdate(req.params.postId, { $pull: { likes: req.user.id } }, { new: true }).populate('postedBy', '_id name username dp').populate('comments.postedBy', '_id username dp name');
                   return res.status(200).json(post);
             }
       } catch (error) {

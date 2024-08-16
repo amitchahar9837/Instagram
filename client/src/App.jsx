@@ -14,6 +14,7 @@ import FollowingPost from "./pages/FollowingPost";
 import FollowerList from "./pages/FollowerList";
 import FollowingList from "./pages/FollowingList";
 import CreatePost from "./pages/CreatePost";
+import PostDetails from "./pages/PostDetails";
 
 export default function App() {
   return (
@@ -31,6 +32,7 @@ export default function App() {
             <Route path="/following-post" element={<FollowingPost />} />
             <Route path='/profile/follower-list/:userId' element={<FollowerList/>} />
             <Route path='/profile/following-list/:userId' element={<FollowingList/>} />
+            <Route path='/post/:postId' element={<PostDetails/>} />
             <Route path="/create" element={<CreatePost/>} />
           </Route>
           <Route element={<NavigatePage />}>
