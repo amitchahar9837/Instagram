@@ -1,16 +1,18 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation, useParams } from "react-router-dom";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
-
+import {updateFailure, updateStart, updateSuccess} from '../redux/user/userSlice';
+import {Spinner} from 'flowbite-react'
 export default function Profile() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const loadingPost = new Array(6).fill(null);
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser,loading:followLoading } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
   const [user, setUser] = useState({});
   const location = useLocation();
+  const dispatch = useDispatch();
 
   const fetchUser = async () => {
     try {
@@ -26,6 +28,26 @@ export default function Profile() {
       setLoading(false);
     }
   };
+
+  //follow user
+  const followUser = async (userId) =>{
+    try {
+      dispatch(updateStart());
+      const res = await fetch(`/api/user/follow/${userId}`,{
+        method:'PUT'
+      })
+      if(res.ok){
+        const data = await res.json();
+        setUser(data.followedUser);    
+        dispatch(updateSuccess(data.currentUser));  
+      }else{
+        dispatch(updateFailure());
+      }
+    } catch (error) {
+        console.log(error.message);
+        dispatch(updateFailure());
+    }
+  }
   useEffect(() => {
     fetchUser();
   }, [location]);
@@ -71,12 +93,16 @@ export default function Profile() {
                 <Link to={`/profile/following-list/${user._id}`}>{user && user.following.length} following</Link>
               </div>
               {currentUser.following.includes(user._id) ? (
-                <button className="w-full py-2 bg-slate-100 text-green-500 rounded-sm">
-                  Following
+                <button className="w-full py-2 bg-slate-100 text-green-500 rounded-sm" onClick={() => followUser(user._id)} disabled={followLoading} >
+                  {
+                    followLoading ? <Spinner /> : 'Following'
+                  }
                 </button>
               ) : (
-                <button className="w-full py-2 bg-blue-500 text-white rounded-sm">
-                  Follow
+                <button className="w-full py-2 bg-blue-500 text-white rounded-sm" onClick={() => followUser(user._id)}>
+                  {
+                    followLoading ? <Spinner /> : 'Follow'
+                  }
                 </button>
               )}
             </div>

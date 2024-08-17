@@ -1,6 +1,11 @@
 import nodemailer from 'nodemailer';
+import dotenv from 'dotenv';
+
+dotenv.config();
 const emailUser = process.env.emailUser;
 const emailPassword = process.env.emailPassword;
+
+
 
 export const sendResetPasswordMail = (name, email, token) => {
       try {

@@ -149,7 +149,7 @@ export default function Header() {
               ) : (
                 users.length > 0 && (
                   users.map(user => (
-                    <Link to={`${currentUser._id !== user._id ? `/profile/${user._id}` : "/profile"}`} key={user._id} className="flex items-center gap-3">
+                    <Link to={`${currentUser._id !== user._id ? `/user/${user._id}` : "/profile"}`} key={user._id} className="flex items-center gap-3" onClick={() => setShowSearchModal(false)}>
                       <img src={user.dp} alt={user.name}  className="w-10 h-10 rounded-full"/>
                       <div className="flex flex-col">
                         <h2 className="font-semibold">{user.name}</h2>

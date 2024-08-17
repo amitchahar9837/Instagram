@@ -24,7 +24,7 @@ export const signup = async (req, res, next) => {
             if (username !== username.toLowerCase()) {
                   return next(errorHandler(400, 'username must be lowercase'))
             }
-            if (username.match(/^[a-zA-Z0-9._-]+$/)) {
+            if (!username.match(/^[a-zA-Z0-9._-]+$/)) {
                   return next(errorHandler(400, 'username can only contain letters and numbers and special characters(. - _)'))
             }
       }
@@ -96,7 +96,7 @@ export const resetPassword = async (req,res,next) => {
             const data = await User.findOne({token});
 
             if(!data){
-                  return next(errorHandler(404, "token has been expired or wrong token"));
+                  return next(errorHandler(404, "Token has been expired or wrong token"));
             }
 
             const newPassword = bcryptjs.hashSync(password,10);
@@ -118,10 +118,13 @@ export const forgotPassword = async(req,res,next) =>{
                   return next(errorHandler(404, "User not found!"));
             }
             
-            const token = randomstring.generate();
-            await user.updateOne({email},{token});
-            sendResetPasswordMail(user.name, user.email, token);
-            res.status(200).json({message:"Password reset token has been sent to your email"});
+            const token = randomstring.generate({
+                  length:6,
+                  charset: 'numeric'
+            });
+            await User.updateOne({email},{token});
+            await sendResetPasswordMail(user.name, user.email, token);
+            res.status(200).json({message:"Reset token has been sent to your email"});
       } catch (error) {
             next(error);
       }

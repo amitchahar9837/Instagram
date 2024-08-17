@@ -1,11 +1,11 @@
 import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-import { signInFailure, signInStart, signInSuccess } from "../redux/user/userSlice";
 import { Alert, Spinner } from "flowbite-react";
+import { IoMdEye, IoIosEyeOff } from "react-icons/io";
 
 export default function Signup() {
   const [formData, setFormData] = useState({});
+  const [showPassword,setShowPassword] = useState(false);
   const [errorMessage, setErrorMessage] = useState(null);
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
@@ -73,13 +73,20 @@ export default function Signup() {
           id="email"
           onChange={handleChange}
         />
+        <div className="w-full relative">
         <input
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
-          type="password"
+          type={`${showPassword ? "text" : "password"}`}
           id="password"
           placeholder="••••••••"
           onChange={handleChange}
         />
+        <div className="absolute right-2 text-gray-500 top-1/2 -translate-y-1/2 text-2xl cursor-pointer">
+        {
+          showPassword ? <IoIosEyeOff onClick={() => setShowPassword(!showPassword)} /> : <IoMdEye onClick={() => setShowPassword(!showPassword)}/>
+        }
+        </div>
+        </div>
         <button type="submit" className="w-full py-2 bg-gradient-to-r from-[#f9ce34] via-[#ee2a7b] to-[#6228d7] text-white rounded-md text-md font-medium " disabled={loading}>
           {loading  ? (
             <>

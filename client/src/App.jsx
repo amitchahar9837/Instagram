@@ -16,6 +16,8 @@ import FollowingList from "./pages/FollowingList";
 import CreatePost from "./pages/CreatePost";
 import PostDetails from "./pages/PostDetails";
 import Search from "./pages/Search";
+import ForgotPassword from "./pages/ForgotPassword";
+import ResetPassword from "./pages/ResetPassword";
 
 export default function App() {
   return (
@@ -40,6 +42,8 @@ export default function App() {
           <Route element={<NavigatePage />}>
             <Route path="/sign-in" element={<Signin />} />
             <Route path="/sign-up" element={<Signup />} />
+            <Route path="/forgot-password" element={<ForgotPassword/>} />
+            <Route path="/reset-password" element={<ResetPassword/>} />
           </Route>
         </Routes>
       </BrowserRouter>
