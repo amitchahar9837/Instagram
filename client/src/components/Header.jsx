@@ -1,8 +1,7 @@
-import React, { useState } from "react";
-import { Avatar, Button, Dropdown, Navbar, TextInput } from "flowbite-react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import { Avatar, Button, Dropdown, Navbar, Modal, TextInput, Spinner } from "flowbite-react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AiOutlineSearch } from "react-icons/ai";
-import { ImCross } from "react-icons/im";
 import { MdLightMode, MdOutlineLightMode } from "react-icons/md";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleTheme } from "../redux/theme/themeSlice";
@@ -12,9 +11,34 @@ export default function Header() {
   const dispatch = useDispatch();
   const { theme } = useSelector((state) => state.theme);
   const { currentUser } = useSelector((state) => state.user);
-  const [searchBar, setSearchBar] = useState(false);
+  const [users, setUsers] = useState([]);
+  const [loading, setLoading] = useState(false);
+  const [search, setSearch] = useState('');
+  const path = useLocation().pathname;
+  const [showSearchModal, setShowSearchModal] = useState(false);
 
-  const path = useLocation();
+  useEffect(()=>{
+    if(search === '') setUsers([]);
+    if(search !== '') handleSearch();
+  },[search])
+
+  const handleSearch = async()=>{
+    try {
+      setLoading(true);
+      const res = await fetch(`/api/user/searchuser?search=${search}`);
+      const data = await res.json();
+    if(res.ok){
+      setLoading(false);
+      setUsers(data);
+    }else{
+      setLoading(false);
+      console.log(data.message);
+    }
+    } catch (error) {
+      setLoading(false);
+      console.log(error.message);
+    }
+  }
 
   const handleSignout = async () => {
     try {
@@ -40,26 +64,20 @@ export default function Header() {
         Instagram
       </Link>
 
-      <form>
-        <TextInput
-          type="text"
-          placeholder="Search..."
-          rightIcon={AiOutlineSearch}
-          className={`hidden lg:inline outline-[#ee2a7b] ${
-            searchBar && "!inline absolute top-[100%] z-10"
-          }`}
-        />
-      </form>
-      <Button
-        className="w-12 h-10 lg:hidden flex items-center"
-        color="gray"
-        pill
-        onClick={() => setSearchBar(!searchBar)}
-      >
-        {searchBar ? <ImCross /> : <AiOutlineSearch />}
-      </Button>
 
       <div className="flex items-center gap-4 md:order-2">
+      {
+        currentUser && (
+          <Button
+        className="w-12 h-10 flex items-center"
+        color="gray"
+        pill
+        onClick={() => setShowSearchModal(true)}
+      >
+        <AiOutlineSearch />
+      </Button>
+        )
+      }
         <Button
           className="w-10 h-10 flex items-center rounded-full border-none outline-none"
           color={"gray"}
@@ -79,9 +97,9 @@ export default function Header() {
             label={<Avatar alt="user" img={currentUser.dp} rounded className="dark:bg-white overflow-hidden rounded-full" />}
           >
             <Dropdown.Header>
-              <span className="block text-sm">@{currentUser.name}</span>
+              <span className="block text-sm">@{currentUser.username}</span>
               <span className="block text-sm font-medium truncate">
-                {currentUser.email}
+                {currentUser.name}
               </span>
             </Dropdown.Header>
             <Link to={"/profile"}>
@@ -112,6 +130,39 @@ export default function Header() {
           </Navbar.Link>
         </Navbar.Collapse>
       )}
+
+      {/* Search User Modal */}
+      <Modal
+        show={showSearchModal}
+        size={"md"}
+        popup
+      >
+        <Modal.Header onClick={() => setShowSearchModal(false)} />
+        <Modal.Body>
+          <TextInput value={search} onChange={(e)=>setSearch(e.target.value)} placeholder="Search..."  />
+            <div className="w-full flex flex-col gap-5 mt-4 max-w-[400px] overflow-y-auto noScrollbar ">
+            {
+              loading ? (
+                <h3 className="logo text-center text-3xl">
+                <Spinner size={"lg"} />
+              </h3>
+              ) : (
+                users.length > 0 && (
+                  users.map(user => (
+                    <Link to={`${currentUser._id !== user._id ? `/profile/${user._id}` : "/profile"}`} key={user._id} className="flex items-center gap-3">
+                      <img src={user.dp} alt={user.name}  className="w-10 h-10 rounded-full"/>
+                      <div className="flex flex-col">
+                        <h2 className="font-semibold">{user.name}</h2>
+                        <p className="text-gray-400 text-sm">{user.username}</p>
+                      </div>
+                    </Link>
+                  ))
+                )
+              )
+            }
+            </div>            
+        </Modal.Body>
+      </Modal>
     </Navbar>
   );
 }

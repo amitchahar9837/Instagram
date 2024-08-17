@@ -16,7 +16,7 @@ export default function Signup() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email || !formData.password) {
+    if (!formData.name || !formData.email || !formData.password || !formData.username) {
       return setErrorMessage("Please fill out all the fields");
     }
     try {
@@ -50,6 +50,7 @@ export default function Signup() {
           Instagram
         </h2>
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full items-center">
+        <div className="flex gap-6 md:gap-2 flex-col md:flex-row w-full">
         <input
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
           type="text"
@@ -59,8 +60,16 @@ export default function Signup() {
         />
         <input
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
+          type="text"
+          placeholder="username"
+          id="username"
+          onChange={handleChange}
+        />
+        </div>
+        <input
+          className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
           type="email"
-          placeholder="name@company.com"
+          placeholder="email"
           id="email"
           onChange={handleChange}
         />

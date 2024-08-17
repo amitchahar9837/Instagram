@@ -28,7 +28,7 @@ export default function PostDetailCommentSection({
                   className="w-5 h-5 lg:w-8 lg:h-8 rounded-full"
                 />
               </Link>
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-1 dark:text-white">
                 <Link
                   to={`/user/${post.postedBy._id}`}
                   className="font-semibold"

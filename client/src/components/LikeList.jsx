@@ -99,7 +99,7 @@ export default function LikeList({ post, followUser, setShowLikes }) {
                           }`}
                           className="font-medium line-clamp-1 text-sm sm:text-md inline-block w-80% text-nowrap text-ellipsis"
                         >
-                          {user.email}
+                          {user.username}
                         </Link>
                         <h4 className="font-normal text-sm sm:text-md line-clamp-1">
                           {user.name}

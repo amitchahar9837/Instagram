@@ -18,7 +18,7 @@ export default function Signin() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.email || !formData.password) {
+    if (!formData.username || !formData.password) {
       return dispatch(signInFailure("Please fill out all the fields"));
     }
     try {
@@ -52,9 +52,9 @@ export default function Signin() {
         <form onSubmit={handleSubmit} className="flex flex-col gap-6 w-full items-center">
         <input
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
-          type="email"
-          placeholder="name@company.com"
-          id="email"
+          type="text"
+          placeholder="username"
+          id="username"
           onChange={handleChange}
         />
         <div className="w-full relative">

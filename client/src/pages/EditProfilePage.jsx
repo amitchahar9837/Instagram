@@ -46,13 +46,14 @@ export default function EditProfile() {
 
     if (uploadingPicture) {
       setUpdateUserError("Please wait for image to upload");
+      setUpdateUserSuccess(null);
       return;
     }
     if (Object.keys(formData).length === 0) {
+      setUpdateUserSuccess(null);
       setUpdateUserError("No changes made");
       return;
     }
-
     try {
       setUpdateUserError(null);
       setUpdateUserSuccess(null);
@@ -128,8 +129,8 @@ export default function EditProfile() {
     );
   };
   return (
-    <div className="max-w-lg mx-auto p-3 w-full">
-      <h1 className="my-5 text-center font-semibold text-3xl">Edit Profile</h1>
+    <div className="max-w-lg mx-auto p-1 w-full">
+      <h1 className="my-2 text-center font-semibold text-3xl">Edit Profile</h1>
       <form onSubmit={handleSubmit} className="flex flex-col gap-4">
         <input
           type="file"
@@ -174,13 +175,24 @@ export default function EditProfile() {
         {imageFileUploadError && (
           <Alert color={"failure"}>{imageFileUploadError} </Alert>
         )}
+        <div className="flex flex-col md:flex-row gap-4 w-full">
         <TextInput
           type="text"
           id="name"
           placeholder="name"
+          className="w-full"
           defaultValue={currentUser.name}
           onChange={handleChange}
         />
+        <TextInput
+          type="text"
+          id="username"
+          className="w-full"
+          placeholder="username"
+          defaultValue={currentUser.username}
+          onChange={handleChange}
+        />
+        </div>
         <TextInput
           type="email"
           id="email"

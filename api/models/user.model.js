@@ -6,7 +6,6 @@ const userSchema = new mongoose.Schema({
         required:true,
     },
     username:{
-        default:'Instagram User',
         type:String,
         unique:true,
         required:true,
@@ -22,7 +21,7 @@ const userSchema = new mongoose.Schema({
     },
     dp:{
         type:String,
-        default:'https://res.cloudinary.com/ascoder/image/upload/v1711302086/opjujso3dr4bn0w9mo82.png'
+        default:'https://i.pinimg.com/474x/51/f6/fb/51f6fb256629fc755b8870c801092942.jpg'
     },
     followers:[{type:ObjectId, ref:"user"}],
     following:[{type:ObjectId, ref:"user"}],

@@ -71,8 +71,8 @@ export const updateUser = async (req, res, next) => {
                   if (req.body.username !== req.body.username.toLowerCase()) {
                         return next(errorHandler(400, 'username must be lowercase'))
                   }
-                  if (!req.body.username.match(/^[a-zA-Z0-9]+$/)) {
-                        return next(errorHandler(400, 'username can only contain letters and numbers'))
+                  if (!req.body.username.match(/^[a-zA-Z0-9._-]+$/)) {
+                        return next(errorHandler(400, 'username can only contain letters and numbers and special characters(. - _)'))
                   }
             }
             req.body.password = bcryptjs.hashSync(req.body.password, 10);
@@ -95,36 +95,54 @@ export const updateUser = async (req, res, next) => {
       }
 }
 
+export const removeFollower = async (req,res,next) =>{
+      const userId = req.params.userId;
+      try {
+            const currentUser = await User.findById(req.user.id);
+            
+            const userIndex = currentUser.followers.indexOf(userId);
+            if(userIndex !== -1){
+                  const currentUser = await User.findByIdAndUpdate( req.user.id, { $pull: { followers: userId } }, { new: true }).select("-password");
+
+                  const followedUser = await User.findByIdAndUpdate(userId, { $pull: { following: req.user.id } }, { new: true }).select("-password");
+                  return res.status(200).json({ followedUser, currentUser });
+            }else{
+                  return next(errorHandler(400,"user not found"))
+            }
+      } catch (error) {
+            next(error);
+      }
+}
+
 export const searchUser = async (req, res, next) => {
-      const startIndex = parseInt(req.query.startIndex) || 0;
-      const limit = parseInt(req, query.limit) || 0;
       try {
             const user = await User.find({
                   ...(req.query.search && { $or: [{ name: { $regex: req.query.search, $options: 'i' } }, { username: { $regex: req.query.search, $options: 'i' } }] })
-            }).populate("following", "_id name username dp").populate("follower", "_id name username dp").sort("-createdAt").skip(startIndex).limit(limit);
+            }).populate("following", "_id name username dp").populate("followers", "_id name username dp").sort("-createdAt")
+
+            res.status(200).json(user);
       } catch (error) {
             next(error)
       }
 }
+export const searchFollowingUser = async (req, res, next) => {
+      try {
+            const currentUser = await User.findById(req.user.id);
+            const users = currentUser.following.
+
+            res.status(200).json(users);
+      } catch (error) {
+            next(error)
+      }
+}
+
+
 
 export const signout = (req, res, next) => {
       try {
             res.clearCookie('access_token').status(200).json("User has been signed out")
       } catch (error) {
             next(error)
-      }
-}
-
-export const deleteUser = async (req, res, next) => {
-      if (req.user.id !== req.params.userId) {
-            return next(errorHandler(403, "You are not allowed to delete account"))
-      }
-      try {
-            await User.findByIdAndDelete(req.params.userId);
-            await Post.deleteMany({ postedBy: req.params.userId });
-            res.status(200).json("Account has been deleted")
-      } catch (error) {
-            next(error);
       }
 }
 

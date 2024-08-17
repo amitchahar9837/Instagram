@@ -15,6 +15,7 @@ import FollowerList from "./pages/FollowerList";
 import FollowingList from "./pages/FollowingList";
 import CreatePost from "./pages/CreatePost";
 import PostDetails from "./pages/PostDetails";
+import Search from "./pages/Search";
 
 export default function App() {
   return (
@@ -34,6 +35,7 @@ export default function App() {
             <Route path='/profile/following-list/:userId' element={<FollowingList/>} />
             <Route path='/post/:postId' element={<PostDetails/>} />
             <Route path="/create" element={<CreatePost/>} />
+            <Route path="/search" element={<Search/>} />
           </Route>
           <Route element={<NavigatePage />}>
             <Route path="/sign-in" element={<Signin />} />

@@ -15,7 +15,7 @@ export default function PostDetailHeader({post, followUser, deletePost}) {
             className="lg:w-8 lg:h-8 w-5 h-5 rounded-full"
           />
         </Link>
-        <div className="flex gap-1 items-center">
+        <div className="flex gap-1 items-center dark:text-white">
           <Link
             to={`/user/${post.postedBy._id}`}
             className="font-medium"

@@ -55,8 +55,8 @@ export default function Profile() {
           />
         </div>
         <div className="flex flex-col gap-2 items-center md:items-start">
-          <h1 className="text-3xl font-bold">{currentUser.name}</h1>
-          <p className="font-medium">{currentUser.email}</p>
+          <h1 className="text-3xl font-bold">{currentUser.username}</h1>
+          <p className="font-medium">{currentUser.name}</p>
           <div className="flex items-center gap-2 sm:gap-4 text-lg font-semibold">
             <h2>{posts && posts.length} posts</h2>
             <Link to={`/profile/follower-list/${currentUser._id}`}>{currentUser && currentUser.followers.length} followers</Link>

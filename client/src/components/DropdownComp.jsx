@@ -12,7 +12,7 @@ export default function DropdownComp({ post, followUser, deletePost }) {
   return (
     <>
       {/* Dropdown menu */}
-      <Dropdown arrowIcon={false} inline label={<BsThreeDots />}>
+      <Dropdown arrowIcon={false} inline label={<BsThreeDots className="dark:hover:text-white" />}>
         {currentUser.following.includes(post.postedBy._id) && (
           <Dropdown.Item
             className="text-red-500"
