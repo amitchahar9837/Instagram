@@ -74,9 +74,9 @@ export default function ForgotPassword() {
         </form>
         <Link
           to={"/sign-in"}
-          className="text-gray-500 flex items-center gap-2 text-lg"
+          className="text-gray-500 flex items-center gap-2"
         >
-          <IoMdArrowRoundBack />
+          <IoMdArrowRoundBack className="text-lg" />
           <h3>Back to Sign In</h3>
         </Link>
         {errorMessage && (

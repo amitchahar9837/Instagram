@@ -18,6 +18,7 @@ import PostDetails from "./pages/PostDetails";
 import Search from "./pages/Search";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
+import ErrorPage from "./pages/ErrorPage";
 
 export default function App() {
   return (
@@ -45,6 +46,7 @@ export default function App() {
             <Route path="/forgot-password" element={<ForgotPassword/>} />
             <Route path="/reset-password" element={<ResetPassword/>} />
           </Route>
+          <Route path="*" element={<ErrorPage/>} />
         </Routes>
       </BrowserRouter>
     </>

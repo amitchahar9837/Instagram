@@ -147,7 +147,7 @@ export default function CreatePost() {
           <Alert color={"failure"}>{imageFileUploadError}</Alert>
         )}
         {formData.picture && (
-          <div className="w-96 h-96 mx-auto">
+          <div className="w-full h-72 xs:w-96 xs:h-96 mx-auto">
             <img
             src={formData.picture}
             alt="upload"
