@@ -102,23 +102,13 @@ export default function CreatePost() {
         <div className="flex flex-col gap-4">
           <TextInput
             type="text"
-            id="title"
-            placeholder="Title"
+            id="caption"
+            placeholder="Caption"
             className="flex-1"
             onChange={(e) =>
-              setFormData({ ...formData, title: e.target.value })
+              setFormData({ ...formData, caption: e.target.value })
             }
-          />
-          <TextInput
-            type="text"
-            id="body"
-            placeholder="Content"
-            className="flex-1"
-            onChange={(e) =>
-              setFormData({ ...formData, body: e.target.value })
-            }
-          />
-          
+          />          
         </div>
         <div className="flex items-center justify-between gap-4 p-3 border-4 border-teal-500 border-dotted ">
           <TextInput

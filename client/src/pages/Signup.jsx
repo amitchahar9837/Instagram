@@ -54,7 +54,7 @@ export default function Signup() {
         <input
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
           type="text"
-          placeholder="name"
+          placeholder="Full name"
           id="name"
           onChange={handleChange}
         />

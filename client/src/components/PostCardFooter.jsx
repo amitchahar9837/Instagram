@@ -64,8 +64,7 @@ export default function PostCardFooter({ post, followUser, likePost, createComme
       </div>
       {/* post caption */}
       <div className="px-2 -mt-2">
-        <h2 className="font-medium">{post.title}</h2>
-        <h3>{post.body}</h3>
+        <h2 className="text-gray-600 dark:text-gray-300">{post.caption}</h2>
       </div>
 
       {/* Create comment form */}

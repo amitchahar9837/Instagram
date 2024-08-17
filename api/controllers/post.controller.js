@@ -49,13 +49,13 @@ export const followingUserPost = async (req, res, next) => {
 }
 
 export const createPost = async (req, res, next) => {
-      const { title, body, picture } = req.body;
+      const { caption, body, picture } = req.body;
 
       if (!picture) {
             return next(errorHandler(400, "Please provide post picture"));
       }
       const newPost = new Post({
-            title,
+            caption,
             body,
             picture,
             postedBy: req.user.id

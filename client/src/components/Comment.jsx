@@ -30,9 +30,9 @@ export default function Comment({ comment, post, onDelete, onEdit }) {
         />
       </Link>
       <div className={`flex-1 flex ${isEditing ? `flex-col` : `flex-row`}`}>
-        <div className="text-gray-500 flex gap-1 w-full">
+        <div className="text-gray-500 flex gap-1 w-full flex-wrap">
           <Link
-            to={`/user/${comment.postedBy._id}`}
+            to={`${currentUser._id === comment.postedBy._id ? "/profile" : `/user/${comment.postedBy._id}`}`}
             className="font-semibold text-black dark:text-white"
           >
             {comment.postedBy.name + " "}

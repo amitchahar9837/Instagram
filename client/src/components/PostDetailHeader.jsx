@@ -8,7 +8,7 @@ export default function PostDetailHeader({post, followUser, deletePost}) {
   return (
       <div className="flex justify-between items-center w-full px-2 pb-4">
       <div className="flex items-center gap-2">
-        <Link to={`/user/${post.postedBy._id}`}>
+        <Link to={`${currentUser._id === post.postedBy._id ? "/profile" : `/user/${post.postedBy._id}`}`}>
           <img
             src={post.postedBy.dp}
             alt=""
@@ -17,7 +17,7 @@ export default function PostDetailHeader({post, followUser, deletePost}) {
         </Link>
         <div className="flex gap-1 items-center dark:text-white">
           <Link
-            to={`/user/${post.postedBy._id}`}
+            to={`${currentUser._id === post.postedBy._id ? "/profile" : `/user/${post.postedBy._id}`}`}
             className="font-medium"
           >
             {post.postedBy.name}

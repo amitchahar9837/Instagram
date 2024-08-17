@@ -1,10 +1,7 @@
 import mongoose from 'mongoose';
 const { ObjectId } = mongoose.Schema.Types
 const postSchema = new mongoose.Schema({
-    title: {
-        type: String,
-    },
-    body: {
+    caption: {
         type: String,
     },
     picture: {
