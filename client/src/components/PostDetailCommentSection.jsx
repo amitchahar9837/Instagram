@@ -22,7 +22,7 @@ export default function PostDetailCommentSection({
         </div>
       ) : (
         <>
-          {!post.caption && (
+          {post.caption && (
             <div className="w-full flex items-start gap-2 mb-1">
               <Link to={`${currentUser._id === post.postedBy._id ? "/profile" : `/user/${post.postedBy._id}`}`}>
                 <img
