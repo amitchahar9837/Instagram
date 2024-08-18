@@ -8,7 +8,7 @@ import Home from "./pages/Home";
 import Signin from "./pages/Signin";
 import Signup from "./pages/Signup";
 import Profile from "./pages/Profile";
-import UserProfile from "./pages/userProfile";
+import UserProfile from "./pages/UserProfile";
 import EditProfilePage from "./pages/EditProfilePage";
 import FollowingPost from "./pages/FollowingPost";
 import FollowerList from "./pages/FollowerList";

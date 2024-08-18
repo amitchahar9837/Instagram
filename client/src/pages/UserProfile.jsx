@@ -4,7 +4,7 @@ import { Link, useLocation, useParams } from "react-router-dom";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
 import {updateFailure, updateStart, updateSuccess} from '../redux/user/userSlice';
 import {Spinner} from 'flowbite-react'
-export default function Profile() {
+export default function UserProfile() {
   const { id } = useParams();
   const [loading, setLoading] = useState(true);
   const loadingPost = new Array(6).fill(null);
