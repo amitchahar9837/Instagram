@@ -3,15 +3,16 @@ import https from 'https';
 
 const URL = 'https://instagram-cpns.onrender.com';
 
-const job = new cron.CronJob("*/14 * * * * *", () => {
-      https.get(URL,(res)=>{
-            if(res.statusCode === 200){
-              console.log("get request sent successfully");
-            }else{
-                  console.log("get request failed");
+// Set the cron job to run every 10 minutes
+const job = new cron.CronJob("*/10 * * * *", () => {
+      https.get(URL, (res) => {
+            if (res.statusCode === 200) {
+                  console.log("GET request sent successfully");
+            } else {
+                  console.log("GET request failed");
             }
       }).on('error', (e) => {
-            console.log("error while sending request",e);
+            console.log("Error while sending request", e);
       });
 });
 

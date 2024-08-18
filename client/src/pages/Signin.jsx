@@ -54,6 +54,7 @@ export default function Signin() {
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
           type="text"
           placeholder="username"
+          defaultValue="test_123"
           id="username"
           onChange={handleChange}
         />
@@ -62,6 +63,7 @@ export default function Signin() {
           className="border border-gray-300 py-2 px-4 outline-none w-full focus:border-blue-500 rounded-md"
           type={`${showPassword ? "text" : "password"}`}
           id="password"
+          defaultValue="test@123"
           placeholder="••••••••"
           onChange={handleChange}
         />
