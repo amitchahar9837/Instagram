@@ -78,7 +78,7 @@ export default function LikeList({ post, followUser, setShowLikes }) {
                 <input
                   type="text"
                   placeholder="Search"
-                  className="w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded"
+                  className="w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded dark:text-gray-200 dark:bg-gray-800 dark:placeholder:text-gray-200"
                   onChange={handleSearch}
                 />
                 {searchList.map((user, index) => (
