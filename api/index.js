@@ -6,7 +6,7 @@ import postRoutes from './routes/post.route.js';
 import userRoutes from './routes/user.route.js';
 import cookieParser from 'cookie-parser'
 import path from 'path'
-
+import job from './utils/cron.js';
 dotenv.config();
 
 mongoose.connect(process.env.MONGOURI).then(() => {
@@ -14,7 +14,7 @@ mongoose.connect(process.env.MONGOURI).then(() => {
 }).catch((err) => {
       console.log(err)
 })
-
+job.start();
 const __dirname = path.resolve();
 const app = express();
 app.use(express.json());
