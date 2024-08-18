@@ -5,7 +5,7 @@ import PostCard from '../components/PostCard';
 import { useDispatch, useSelector } from 'react-redux';
 import {updateStart, updateSuccess, updateFailure} from '../redux/user/userSlice'
 
-export default function Home() {
+export default function FollowingPost() {
   const loadingPost = new Array(9).fill(null);
   const [loading,setLoading] = useState(false);
   const [posts,setPosts] = useState([]);
