@@ -14,9 +14,9 @@ import {
   updateFailure,
   updateStart,
   updateSuccess,
-} from "../Redux/user/userSlice";
+} from "../redux/user/userSlice";
 
-export default function EditProfile() {
+export default function EditProfilePage() {
   const { currentUser, error,loading } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
