@@ -13,7 +13,7 @@ export default function PostDetailCommentSection({
   const {currentUser} = useSelector((state)=>state.user);
   return (
     <div className="w-full border-y h-[300px]  lg:h-[60%] overflow-y-auto noScrollbar border-slate-100 p-2 py-4">
-      {post.caption === "" && comments.length <= 0 ? (
+      {!post.caption && comments.length <=0 ? (
         <div className="w-full h-full flex flex-col items-center justify-center">
           <h1 className="font-semibold text-xl lg:text-3xl">
             No comments yet.
@@ -22,7 +22,7 @@ export default function PostDetailCommentSection({
         </div>
       ) : (
         <>
-          {post.caption !== "" && (
+          {!post.caption && (
             <div className="w-full flex items-start gap-2 mb-1">
               <Link to={`${currentUser._id === post.postedBy._id ? "/profile" : `/user/${post.postedBy._id}`}`}>
                 <img

@@ -30,6 +30,7 @@ export default function FollowerList() {
 
       const handleSearch = async(e) =>{
         const searchText = e.target.value;
+        if(searchText === '') setList(followerList);
         if(searchText !== ''){
           setList(followerList.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()) || user.username.toLowerCase().includes(searchText.toLowerCase())))
         }
@@ -83,7 +84,7 @@ export default function FollowerList() {
 
   return (
     <div className='my-4'>
-      <div className='w-full max-w-2xl mx-auto flex flex-col gap-5'>
+      <div className='w-full max-w-2xl mx-auto flex flex-col gap-5 px-4 py-2'>
             <h2 className='font-bold text-lg text-center'>Followers</h2>
             
 
@@ -94,7 +95,7 @@ export default function FollowerList() {
                 <Spinner size={"lg"} />
               </h3>
               ) : (
-                !loading && list.length > 0 ? (
+                !loading && followerList.length > 0 ? (
                   <>
                   <input type="text" placeholder='Search' className='w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded' onChange={handleSearch} />
                     {

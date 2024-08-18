@@ -8,6 +8,7 @@ export default function LikeList({ post, followUser, setShowLikes }) {
   const { currentUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [likesData, setLikesData] = useState([]);
+  const [searchUser,setSearchUser] = useState([]);
 
   const fetchLikes = async () => {
     try {

@@ -48,14 +48,9 @@ export default function FollowingList() {
 
       const handleSearch = async(e) =>{
         const searchText = e.target.value;
+        if(searchText === '')setList(followingList);
         if(searchText !== ''){
-          const res = await fetch(`/api/user/searchfollowinguser?search=${searchText}`)
-          if(!res.ok){
-              console.log(error.message);
-          }else{
-            const data = await res.json();
-            console.log(data);
-          }
+          setList(followingList.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()) || user.username.toLowerCase().includes(searchText.toLowerCase())))
         }
       }
 
@@ -64,7 +59,7 @@ export default function FollowingList() {
       },[userId])
   return (
     <div className='my-4'>
-      <div className='w-full max-w-2xl mx-auto flex flex-col gap-5 p-2'>
+      <div className='w-full max-w-2xl mx-auto flex flex-col gap-5 px-4 py-2'>
             <h2 className='font-medium text-lg text-center'>Following</h2>
             <div className="flex flex-col gap-6 w-full ">
             {
@@ -77,7 +72,7 @@ export default function FollowingList() {
                   <>
                     <input type="text" placeholder='Search' className='w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded' onChange={handleSearch}  />
                     {
-                      followingList.map((user) => (
+                      list.map((user) => (
                         <div className='flex justify-between items-center' key={user._id}>
                           <div className="flex gap-2 items-center">
                           <Link to={`${currentUser._id === user._id ? '/profile' : `/user/${user._id}`}`} className="w-8 h-8">

@@ -1,21 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Link, useLocation } from "react-router-dom";
 import { FaRegHeart, FaRegComment } from "react-icons/fa";
+import { signInSuccess } from "../redux/user/userSlice";
 
 export default function Profile() {
   const [loading, setLoading] = useState(false);
   const loadingPost = new Array(6).fill(null);
   const { currentUser } = useSelector((state) => state.user);
   const [posts, setPosts] = useState([]);
+  const dispatch = useDispatch();
   const location = useLocation();
 
   const fetchPosts = async () => {
     setLoading(true);
-    const res = await fetch("/api/post/myposts");
+    const res = await fetch(`/api/user/getuser/${currentUser._id}`);
     const data = await res.json();
     if (res.ok) {
-      setPosts(data);
+      setPosts(data.posts);
+      dispatch(signInSuccess(data.user))
       setLoading(false);
     }
   };
