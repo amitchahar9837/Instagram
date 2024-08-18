@@ -8,7 +8,15 @@ export default function LikeList({ post, followUser, setShowLikes }) {
   const { currentUser } = useSelector((state) => state.user);
   const [loading, setLoading] = useState(false);
   const [likesData, setLikesData] = useState([]);
-  const [searchUser,setSearchUser] = useState([]);
+  const [searchList,setSearchList] = useState([]);
+
+  const handleSearch = async(e) =>{
+    const searchText = e.target.value;
+    if(searchText === '')setSearchList(likesData);
+    if(searchText !== ''){
+      setSearchList(likesData.filter(user => user.name.toLowerCase().includes(searchText.toLowerCase()) || user.username.toLowerCase().includes(searchText.toLowerCase())))
+    }
+  }
 
   const fetchLikes = async () => {
     try {
@@ -17,6 +25,7 @@ export default function LikeList({ post, followUser, setShowLikes }) {
       const data = await res.json();
       if (res.ok) {
         setLikesData(data);
+        setSearchList(data);
         setLoading(false);
       }
     } catch (error) {
@@ -70,8 +79,9 @@ export default function LikeList({ post, followUser, setShowLikes }) {
                   type="text"
                   placeholder="Search"
                   className="w-full border-none outline-none focus:ring-0 focus:border-none bg-[#efefef] placeholder:text-gray-400 text-sm rounded"
+                  onChange={handleSearch}
                 />
-                {likesData.map((user, index) => (
+                {searchList.map((user, index) => (
                   <div
                     className="flex justify-between items-center w-full"
                     key={user._id + index}
