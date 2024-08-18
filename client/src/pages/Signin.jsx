@@ -6,7 +6,10 @@ import { Alert, Spinner } from "flowbite-react";
 import { IoMdEye, IoIosEyeOff } from "react-icons/io";
 
 export default function Signin() {
-  const [formData, setFormData] = useState({});
+  const [formData, setFormData] = useState({
+    username: "test_123",
+    password: "test@123",
+  });
   const [showPassword,setShowPassword] = useState(false);
   const {loading, error:errorMessage} = useSelector((state) => state.user);
   const navigate = useNavigate();
