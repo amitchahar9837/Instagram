@@ -4,7 +4,7 @@ import https from 'https';
 const URL = 'https://instagram-cpns.onrender.com';
 
 // Set the cron job to run every 1 hour
-const job = new cron.CronJob("0 * * * *", () => {
+const job = new cron.CronJob("*/20 * * * *", () => {
       https.get(URL, (res) => {
             if (res.statusCode === 200) {
                   console.log("GET request sent successfully");
