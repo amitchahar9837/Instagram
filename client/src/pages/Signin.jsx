@@ -7,8 +7,8 @@ import { IoMdEye, IoIosEyeOff } from "react-icons/io";
 
 export default function Signin() {
   const [formData, setFormData] = useState({
-    username: "test_123",
-    password: "test@123",
+    username: "guest1234",
+    password: "guest1234",
   });
   const [showPassword,setShowPassword] = useState(false);
   const {loading, error:errorMessage} = useSelector((state) => state.user);
