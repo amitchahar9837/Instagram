@@ -16,6 +16,7 @@ export default function Header() {
   const [search, setSearch] = useState('');
   const path = useLocation().pathname;
   const [showSearchModal, setShowSearchModal] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(()=>{
     if(search === '') setUsers([]);
@@ -50,6 +51,7 @@ export default function Header() {
         console.log(data.message);
       } else {
         dispatch(signoutSuccess());
+        navigate('/sign-in')
       }
     } catch (error) {
       console.log(error.message);
