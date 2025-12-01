@@ -19,6 +19,7 @@ import Search from "./pages/Search";
 import ForgotPassword from "./pages/ForgotPassword";
 import ResetPassword from "./pages/ResetPassword";
 import ErrorPage from "./pages/ErrorPage";
+console.log(import.meta.env.VITE_FIREBASE_API_KEY)
 
 export default function App() {
   return (
